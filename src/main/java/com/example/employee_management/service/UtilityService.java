@@ -11,6 +11,6 @@ public class UtilityService {
         String datePart = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String randomPart = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
 
-        return "EMP-" + datePart + randomPart;
+        return "EMP-" + datePart + "-" + randomPart;
     }
 }
