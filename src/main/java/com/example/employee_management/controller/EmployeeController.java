@@ -3,6 +3,7 @@ package com.example.employee_management.controller;
 import com.example.employee_management.dto.EmployeeDTO;
 import com.example.employee_management.model.Employee;
 import com.example.employee_management.service.EmployeeService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +25,13 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<Employee> create(@RequestBody EmployeeDTO dto) {
+    public ResponseEntity<Employee> create(@Valid @RequestBody EmployeeDTO dto) {
         Employee employee = employeeService.save(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(employee);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Employee> update(@PathVariable Long id, @RequestBody EmployeeDTO dto) {
+    public ResponseEntity<Employee> update(@PathVariable Long id, @Valid @RequestBody EmployeeDTO dto) {
         Employee updatedEmployee = employeeService.update(id, dto);
         return ResponseEntity.status(HttpStatus.OK).body(updatedEmployee);
     }
