@@ -1,4 +1,4 @@
-package com.example.employee_management.config;
+package com.example.employee_management.core.config;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -19,10 +19,5 @@ public class AppConfig {
             .setMatchingStrategy(MatchingStrategies.STRICT);
 
         return modelMapper;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }

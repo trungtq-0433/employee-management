@@ -1,4 +1,4 @@
-package com.example.employee_management.exception;
+package com.example.employee_management.api.exception;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
