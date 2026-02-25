@@ -1,4 +1,4 @@
-package com.example.employee_management.model;
+package com.example.employee_management.core.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

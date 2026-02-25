@@ -1,4 +1,4 @@
-package com.example.employee_management.exception;
+package com.example.employee_management.api.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;

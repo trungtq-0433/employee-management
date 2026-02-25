@@ -1,8 +1,8 @@
-package com.example.employee_management.controller;
+package com.example.employee_management.api.controller;
 
-import com.example.employee_management.dto.EmployeeDTO;
-import com.example.employee_management.model.Employee;
-import com.example.employee_management.service.EmployeeService;
+import com.example.employee_management.api.dto.EmployeeDTO;
+import com.example.employee_management.core.model.Employee;
+import com.example.employee_management.core.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
