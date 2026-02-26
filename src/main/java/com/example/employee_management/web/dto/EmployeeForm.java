@@ -1,4 +1,4 @@
-package com.example.employee_management.web.config.controller.dto;
+package com.example.employee_management.web.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
