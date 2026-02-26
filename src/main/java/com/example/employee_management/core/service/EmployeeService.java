@@ -5,9 +5,10 @@ import com.example.employee_management.core.model.Department;
 import com.example.employee_management.core.model.Employee;
 import com.example.employee_management.core.repository.DepartmentRepository;
 import com.example.employee_management.core.repository.EmployeeRepository;
-import com.example.employee_management.web.config.controller.dto.EmployeeForm;
+import com.example.employee_management.web.dto.EmployeeForm;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class EmployeeService {
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
@@ -75,6 +77,7 @@ public class EmployeeService {
             throw new EntityNotFoundException("Employee not exists " + id);
         }
         employeeRepository.deleteById(id);
+        log.info("Employee ID: {} has been deleted successfully", id);
     }
 
     @Transactional
@@ -82,9 +85,14 @@ public class EmployeeService {
         Employee employee;
 
         if (form.getId() != null) {
+            log.info("Updating existing employee {}", form.getId());
             employee = employeeRepository.findById(form.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Employee not exists " + form.getId()));
+                .orElseThrow(() -> {
+                    log.error("Employee ID {} not found", form.getId());
+                    return new EntityNotFoundException("Employee not exists " + form.getId());
+                });
         } else {
+            log.info("Creating a new employee with email {}", form.getEmail());
             employee = new Employee();
         }
 
@@ -97,13 +105,20 @@ public class EmployeeService {
 
         if (form.getDepartmentId() != null) {
             Department dept = departmentRepository.findById(form.getDepartmentId())
-                .orElseThrow(() -> new EntityNotFoundException("Department not exists " + form.getDepartmentId()));
+                .orElseThrow(() -> {
+                    log.warn("Department {} not found", form.getDepartmentId());
+                    return new EntityNotFoundException("Department not exists " + form.getDepartmentId());
+                });
+
             employee.setDepartment(dept);
         } else {
             employee.setDepartment(null);
         }
 
-        return employeeRepository.save(employee);
+        Employee savedEmployee = employeeRepository.save(employee);
+        log.info("Employee successfully saved with ID: {}", savedEmployee.getId());
+
+        return savedEmployee;
     }
 
     public EmployeeForm getFormById(Long id) {
