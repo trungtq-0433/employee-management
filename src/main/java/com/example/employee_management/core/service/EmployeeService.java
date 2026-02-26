@@ -10,6 +10,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -132,5 +133,11 @@ public class EmployeeService {
         form.setDepartmentId(employee.getDepartment() != null ? employee.getDepartment().getId() : null);
 
         return form;
+    }
+
+    @Cacheable(value = "employeeCount")
+    public long countTotalEmployees() {
+        log.info("Calculating total employees (Fetching from Database...)");
+        return employeeRepository.count();
     }
 }

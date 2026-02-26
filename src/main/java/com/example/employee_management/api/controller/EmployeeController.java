@@ -41,4 +41,9 @@ public class EmployeeController {
         employeeService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).body("Deleted!");
     }
+
+    @GetMapping("/total")
+    public long getTotal() {
+        return employeeService.countTotalEmployees();
+    }
 }
