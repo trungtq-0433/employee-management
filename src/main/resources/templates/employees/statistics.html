@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Analytics & Reporting</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-light">
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-dark"><i class="fa-solid fa-chart-line me-2"></i>Reporting & Analytics</h2>
+            <p class="text-muted">Real-time employee distribution and system metrics.</p>
+        </div>
+        <a th:href="@{/employees/list}" class="btn btn-outline-primary">
+            <i class="fa-solid fa-arrow-left me-1"></i> Back to Dashboard
+        </a>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-12 col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4 text-center">
+                    <div class="feature-icon-small d-inline-flex align-items-center justify-content-center text-primary bg-primary bg-opacity-10 rounded-circle mb-3" style="width: 60px; height: 60px;">
+                        <i class="fa-solid fa-users fs-3"></i>
+                    </div>
+                    <h6 class="card-subtitle mb-2 text-muted text-uppercase fw-bold" style="font-size: 0.8rem;">Total Staff</h6>
+                    <h1 class="card-title mb-0 fw-bold display-5" th:text="${total}">0</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-8">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white border-0 pt-4 px-4">
+                    <h5 class="card-title fw-bold mb-0">Distribution by Department</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                            <tr>
+                                <th class="py-3 px-4">Department Name</th>
+                                <th class="py-3 px-4 text-center">Headcount</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="stat : ${deptStats}">
+                                <td class="px-4 fw-semibold" th:text="${stat.departmentName}">HR</td>
+                                <td class="text-center">
+                                    <span class="badge rounded-pill bg-info text-dark px-3" th:text="${stat.employeeCount}">0</span>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(deptStats)}">
+                                <td colspan="3" class="text-center py-5 text-muted">No data available.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5 text-center text-muted">
+        <small>System generated report • <span th:text="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm')}"></span></small>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
