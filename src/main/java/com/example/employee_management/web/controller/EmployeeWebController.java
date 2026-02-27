@@ -7,6 +7,7 @@ import com.example.employee_management.web.dto.EmployeeForm;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,6 +34,7 @@ public class EmployeeWebController {
 	}
 
 	@GetMapping("/add")
+	@PreAuthorize("hasRole('ADMIN')")
 	public String showAddForm(Model model) {
 		model.addAttribute("employeeForm", new EmployeeForm());
 		model.addAttribute("departments", departmentRepository.findAll());
@@ -40,6 +42,7 @@ public class EmployeeWebController {
 	}
 
 	@PostMapping("/save")
+	@PreAuthorize("hasRole('ADMIN')")
 	public String saveEmployee(
 		@Valid @ModelAttribute("employeeForm") EmployeeForm form,
 		BindingResult result,
@@ -57,6 +60,7 @@ public class EmployeeWebController {
 	}
 
 	@GetMapping("/edit/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public String showEditForm(@PathVariable Long id, Model model) {
 		model.addAttribute("employeeForm", employeeService.getFormById(id));
 		model.addAttribute("departments", departmentRepository.findAll());
@@ -64,6 +68,7 @@ public class EmployeeWebController {
 	}
 
 	@GetMapping("/delete/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public String deleteEmployee(@PathVariable Long id, RedirectAttributes ra) {
 		employeeService.delete(id);
 		ra.addFlashAttribute("message", "Employee deleted successfully!");

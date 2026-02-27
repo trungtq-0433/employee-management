@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Employee Form</title>
@@ -11,8 +12,9 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card shadow">
-                <div class="card-header bg-success text-white">
+                <div class="card-header bg-success text-white d-flex justify-content-between">
                     <h4 class="mb-0" th:text="${employeeForm.id == null ? 'Add Employee' : 'Update Employee'}"></h4>
+                    <small sec:authentication="name" class="text-white-50"></small>
                 </div>
 
                 <div class="card-body">
