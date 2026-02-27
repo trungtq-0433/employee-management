@@ -74,4 +74,11 @@ public class EmployeeWebController {
 		ra.addFlashAttribute("message", "Employee deleted successfully!");
 		return "redirect:/employees/list";
 	}
+
+	@GetMapping("/statistics")
+	public String showStatistics(Model model) {
+		model.addAttribute("total", employeeRepository.countTotalEmployees());
+		model.addAttribute("deptStats", employeeRepository.countEmployeesByDepartment());
+		return "employees/statistics";
+	}
 }
