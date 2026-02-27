@@ -12,7 +12,22 @@ public class WebSecurityConfig {
 
 	@Bean
 	public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+		http.authorizeHttpRequests(auth -> {
+				auth.requestMatchers("/login", "/register").permitAll()
+					.requestMatchers("/employees/list").hasAnyRole("USER", "ADMIN")
+					.requestMatchers("/employees/add", "/employees/edit/**", "/employees/save", "/employees/delete/**").hasRole("ADMIN")
+					.anyRequest().authenticated();
+			}).formLogin(form -> form
+				.loginPage("/login")
+				.defaultSuccessUrl("/employees/list", true)
+				.permitAll()
+			)
+			.logout(logout -> logout
+				.logoutSuccessUrl("/login")
+				.permitAll()
+			);
+
+
 		return http.build();
 	}
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Employee List</title>
@@ -7,11 +8,26 @@
 </head>
 <body class="bg-light">
 
-<div class="container mt-5">
+<nav class="navbar navbar-dark bg-dark mb-4">
+    <div class="container">
+        <span class="navbar-brand mb-0 h1">Employee System</span>
+        <div class="d-flex align-items-center">
+            <span class="text-white me-3">
+                Welcome, <strong sec:authentication="name">User</strong>
+                (<span sec:authentication="principal.authorities">Role</span>)
+            </span>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
     <div class="card shadow">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
             <h4 class="mb-0">Employee Management</h4>
-            <a th:href="@{/employees/add}" class="btn btn-light btn-sm">Add New Employee</a>
+            <a sec:authorize="hasRole('ADMIN')" th:href="@{/employees/add}" class="btn btn-light btn-sm">Add New Employee</a>
         </div>
 
         <div class="card-body">
@@ -31,6 +47,7 @@
                 <span th:text="${message}"></span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+
             <div class="table-responsive">
                 <table class="table table-hover table-bordered align-middle">
                     <thead class="table-dark">
@@ -39,7 +56,7 @@
                         <th>Full Name</th>
                         <th>Email</th>
                         <th>Department</th>
-                        <th class="text-center">Actions</th>
+                        <th sec:authorize="hasRole('ADMIN')" class="text-center">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -48,14 +65,15 @@
                         <td th:text="${emp.name}"></td>
                         <td th:text="${emp.email}"></td>
                         <td th:text="${emp.department != null ? emp.department.name : 'N/A'}"></td>
-                        <td class="text-center">
+
+                        <td sec:authorize="hasRole('ADMIN')" class="text-center">
                             <a th:href="@{/employees/edit/{id}(id=${emp.id})}" class="btn btn-warning btn-sm">Edit</a>
                             <a th:href="@{/employees/delete/{id}(id=${emp.id})}" class="btn btn-danger btn-sm"
                                onclick="return confirm('Are you sure you want to delete this employee?')">Delete</a>
                         </td>
                     </tr>
                     <tr th:if="${#lists.isEmpty(employees)}">
-                        <td colspan="5" class="text-center text-muted">No employees found.</td>
+                        <td th:attr="colspan=${#authorization.expression('hasRole(''ADMIN'')') ? 5 : 4}" class="text-center text-muted">No employees found.</td>
                     </tr>
                     </tbody>
                 </table>
